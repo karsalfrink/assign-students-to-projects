@@ -39,7 +39,7 @@ def assign_projects(students, projects):
         for student in group_students:
             if available_projects:
                 project = random.choice(available_projects)
-                assignments.append((student, project[0], project[2]))
+                assignments.append((student, group, project[0], project[2]))
             else:
                 print(f"Error: No suitable project found for {student} from {group}")
     
@@ -48,7 +48,7 @@ def assign_projects(students, projects):
 def save_assignments(assignments, filename):
     with open(filename, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['Student', 'Assigned Project', 'Case Study'])
+        writer.writerow(['Student', 'Student Group', 'Assigned Project', 'Project Case Study'])
         writer.writerows(assignments)
 
 def main():
@@ -60,12 +60,12 @@ def main():
     save_assignments(result, 'assignments.csv')
 
     print("Student Project Assignments:")
-    for student, project, case_study in result:
-        print(f"{student} is assigned to '{project}' (Case Study: {case_study})")
+    for student, student_group, project, case_study in result:
+        print(f"{student} (from {student_group}) is assigned to '{project}' (Case Study: {case_study})")
 
     project_counts = defaultdict(int)
     case_study_counts = defaultdict(int)
-    for _, project, case_study in result:
+    for _, _, project, case_study in result:
         project_counts[project] += 1
         case_study_counts[case_study] += 1
 
@@ -78,8 +78,7 @@ def main():
         print(f"'{case_study}': {count}")
 
     print("\nVerifying assignments:")
-    for student, assigned_project, assigned_case_study in result:
-        student_group = next(group for s, group in students if s == student)
+    for student, student_group, assigned_project, assigned_case_study in result:
         student_project, student_case_study = group_projects[student_group]
         if student_group == next(group for project, group, _ in projects if project == assigned_project):
             print(f"Error: {student} from {student_group} was assigned their own group's project: {assigned_project}")
