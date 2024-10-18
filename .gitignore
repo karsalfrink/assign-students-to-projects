@@ -1,5 +1,6 @@
 students.csv
 projects.csv
+assignments.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
