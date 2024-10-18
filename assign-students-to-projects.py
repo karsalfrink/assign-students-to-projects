@@ -48,13 +48,13 @@ def assign_projects(students, projects):
 def save_assignments_csv(assignments, filename):
     with open(filename, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['Student', 'Original Group', 'Original Case Study', 'Assigned Project', 'Assigned Case Study'])
+        writer.writerow(['Student', 'Original Group', 'Original Case Study', 'Assigned Project', 'Assigned Project Case Study'])
         writer.writerows(assignments)
 
 def save_assignments_markdown(assignments, filename):
     with open(filename, 'w') as f:
-        f.write("# Student Project Assignments\n\n")
-        f.write("| Student | Original Group | Original Case Study | Assigned Project | Assigned Case Study |\n")
+        # f.write("# Student Project Assignments\n\n")
+        f.write("| Student | Original Group | Original Case Study | Assigned Project | Assigned Project Case Study |\n")
         f.write("|---------|----------------|---------------------|------------------|---------------------|\n")
         for student, orig_group, orig_case_study, assigned_project, assigned_case_study in assignments:
             f.write(f"| {student} | {orig_group} | {orig_case_study} | {assigned_project} | {assigned_case_study} |\n")
