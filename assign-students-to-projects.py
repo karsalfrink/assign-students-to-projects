@@ -1,13 +1,14 @@
 import random
 from collections import defaultdict
 import csv
+from unidecode import unidecode
 
 def load_students(filename):
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         return [tuple(line.strip().split(',')) for line in f]
 
 def load_projects(filename):
-    with open(filename, 'r') as f:
+    with open(filename, 'r', encoding='utf-8') as f:
         return [tuple(line.strip().split(',')) for line in f]
 
 def assign_projects(students, projects):
@@ -43,17 +44,19 @@ def assign_projects(students, projects):
             else:
                 print(f"Error: No suitable project found for {student} from {group}")
     
+    # Sort assignments by student name, considering accented characters
+    assignments.sort(key=lambda x: unidecode(x[0].lower()))
+    
     return assignments, group_projects
 
 def save_assignments_csv(assignments, filename):
-    with open(filename, 'w', newline='') as f:
+    with open(filename, 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['Student', 'Original Group', 'Original Case Study', 'Assigned Project', 'Assigned Project Case Study'])
         writer.writerows(assignments)
 
 def save_assignments_markdown(assignments, filename):
-    with open(filename, 'w') as f:
-        # f.write("# Student Project Assignments\n\n")
+    with open(filename, 'w', encoding='utf-8') as f:
         f.write("| Student | Original Group | Original Case Study | Assigned Project | Assigned Project Case Study |\n")
         f.write("|---------|----------------|---------------------|------------------|---------------------|\n")
         for student, orig_group, orig_case_study, assigned_project, assigned_case_study in assignments:
